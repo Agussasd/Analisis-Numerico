@@ -4,8 +4,6 @@ import csv
 import time # Para calcular el tiempo de ejecucion
 import pandas as pd # Para leer las matrices
 
-#360_050
-
 # Leo las matrices A y b y las guardo
 matrizA = pd.read_csv('A_360_050.csv', header=None, index_col=None, delimiter=',', dtype=float)
 A = matrizA.values
