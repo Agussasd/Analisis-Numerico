@@ -1,18 +1,28 @@
 import math as math
 import numpy as np
+import csv
+import time # Para calcular el tiempo de ejecucion
+import pandas as pd # Para leer las matrices
 
-K = [[4.0, -1.0, -1.0, 0.0], [-1.0, 4.0, 0.0, -1.0], [-1.0, 0.0, 4.0, -1.0], [0.0, -1.0, -1.0, 4.0]]
-v = [1.0, 2.0, 0.0, 1.0]
-x = [0.0, 0.0, 0.0, 0.0]
-#Resultado = [0.5, 0.75, 0.25, 0.5]
-tol = 0.01
+#360_050
+
+# Leo las matrices A y b y las guardo
+matrizA = pd.read_csv('A_360_050.csv', header=None, index_col=None, delimiter=',', dtype=float)
+A = matrizA.values
+matrizB = pd.read_csv('b_360_050.csv', header=None, index_col=None, delimiter=',', dtype=float)
+b = matrizB.values
+
 w = 1.4
-n = 4 #dimension de matriz
+tol = 0.1
+n = len(A) #dimension de matriz
 
-def solver_SOR(A, b):
+def solver_SOR(A, b, w, hallarwoptimo = False):
+	
 	error = 2  * tol
+	x = np.zeros(n, dtype = float)
 	diferencia = np.zeros(n, dtype = float)
 	iteraciones = 0
+	
 	while not error <= tol:
 		for i in range(0, n):
 			suma = 0.0
@@ -29,9 +39,26 @@ def solver_SOR(A, b):
 			x[i] = nuevo
 
 		error = np.max(diferencia)
-		iteraciones = iteraciones + 1 #cuento iteracioneses
-
-	print(iteraciones)
-	print(x)
-
-solver_SOR(K, v)
+		iteraciones = iteraciones + 1 #cuento iteraciones
+	
+	print("w: {} itera: {} veces\n\n".format(w, iteraciones))
+	
+	if hallarwoptimo:
+		return iteraciones
+		
+def hallar_w_optimo():
+	"""Ejecuta SOR para 9 w distintos, devuelve las iteraciones y cuanto tarda cada uno"""
+	i = 1
+	while i <= 9:
+		decimal = i / 10
+		w = 1 + decimal
+		tiempo_inicial = time.time()
+		iteraciones = solver_SOR(A, b, w, True)
+		tiempo_total = time.time() - tiempo_inicial
+		print("w: {} itera: {} veces y tarda: {}".format(w, iteraciones, tiempo_total))
+		i += 1
+	
+#tiempo_inicial = time.time()
+solver_SOR(A, b, w)
+#tiempo_total = time.time() - tiempo_inicial
+#print("\ntarda: {}".format(tiempo_total))
