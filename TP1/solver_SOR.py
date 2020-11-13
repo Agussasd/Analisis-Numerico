@@ -5,12 +5,12 @@ import time # Para calcular el tiempo de ejecucion
 import pandas as pd # Para leer las matrices
 
 # Leo las matrices A y b y las guardo
-matrizA = pd.read_csv('A_360_050.csv', header=None, index_col=None, delimiter=',', dtype=float)
+matrizA = pd.read_csv('A_180_020.csv', header=None, index_col=None, delimiter=',', dtype=float)
 A = matrizA.values
-matrizB = pd.read_csv('b_360_050.csv', header=None, index_col=None, delimiter=',', dtype=float)
+matrizB = pd.read_csv('b_180_020.csv', header=None, index_col=None, delimiter=',', dtype=float)
 b = matrizB.values
 
-w = 1.4
+w = 1.72
 tol = 0.1
 n = len(A) #dimension de matriz
 
@@ -20,6 +20,7 @@ def solver_SOR(A, b, w, hallarwoptimo = False):
 	x = np.zeros(n, dtype = float)
 	diferencia = np.zeros(n, dtype = float)
 	iteraciones = 0
+	lista_errores = []
 	
 	while not error <= tol:
 		for i in range(0, n):
@@ -37,7 +38,12 @@ def solver_SOR(A, b, w, hallarwoptimo = False):
 			x[i] = nuevo
 
 		error = np.max(diferencia)
+		lista_errores.append(error)
 		iteraciones = iteraciones + 1 #cuento iteraciones
+		lista_errores.append(error)
+
+	df = pd.DataFrame(lista_errores)
+	df.to_csv('lista_errores.csv')
 	
 	print("w: {} itera: {} veces\n\n".format(w, iteraciones))
 	
