@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 
 def FX(x, y):
 	"""dVx/dt"""
-	ecuacion_resuelta = (6.674e-11) * ((5972e+21)/(((-4.670e+6-x)**2) + ((-y)**2))) * (np.cos(np.arctan2(-y, -4.670e+6 - x)))
+	ecuacion_resuelta = (6.674e-11) * ((5972e+21)/(-4.670e+6-x)**2 + ((-y)**2)) * (math.cos(math.atan2(-y, (-4.670e+6 - (x)))))
 	return ecuacion_resuelta
 
 def FY(x, y):
@@ -17,14 +17,21 @@ def metodo_de_euler(h, tf):
 	
 	n = (tf / h) 
 	n = int(n)
+	vx = np.zeros(n)
+	vy = np.zeros(n)
 	x = np.zeros(n)
 	y = np.zeros(n)
-	x[0] = -1164600
+
+	x[0] = -11646000
 	y[0] = 0
+	vx[0] = 0
+	vy[0] = 7558.746225
 
 	for i in np.arange(0, n - 1):
-		x[i + 1] = x[i] + h * FX(x[i], y[i])
-		y[i + 1] = y[i] + h * FY(x[i], y[i])
+		vx[i + 1] = vx[i] + h * FX(vx[i], vy[i])
+		vy[i + 1] = vy[i] + h * FY(vx[i], vy[i])
+		x[i + 1] = x[i] + h * vx[i + 1]
+		y[i + 1] = y[i] + h * vy[i + 1]
 
 	plt.plot(x, y)
 	plt.xlabel('x')
