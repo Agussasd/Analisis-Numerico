@@ -6,13 +6,13 @@ def FX(x, y):
 	"""dVx/dt"""
 	print(x)
 	alf1 = np.arctan2(-y, -4.670e+6 - x)
-	ecuacion_resuelta = (6.674e-11) * ((5972e+21)/(-4.670e+6-x)**2) + ((-y)**2) * np.cos(alf1)
+	ecuacion_resuelta = (6.674e-11) * ((5972e+21)/(((-4.670e+6-x)**2) + ((-y)**2))) * np.cos(alf1)
 	return ecuacion_resuelta
 
 def FY(x, y):
 	"""dVy/dt"""
 	alf1 = np.arctan2(-y, -4.670e+6 - x)
-	ecuacion_resuelta = (6.674e-11) * ((5972e+21)/(-4.670e+6-x)**2) + ((-y)**2) * np.sin(alf1)
+	ecuacion_resuelta = (6.674e-11) * ((5972e+21)/(((-4.670e+6-x)**2) + ((-y)**2))) * np.sin(alf1)
 	return ecuacion_resuelta
 
 def metodo_de_euler(h, tf):
