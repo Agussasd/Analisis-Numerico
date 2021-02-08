@@ -38,15 +38,13 @@ def rk2(h, tf):
 
 	for i in np.arange(0, n - 1):
 		vx_pred[i + 1] = vx[i] + h * FVX(x[i], y[i])
-		vx[i + 1] = vx[i] + h/2 * ((FVX(x[i], y[i]) + FVX(vx_pred[i + 1], y_pred[i + 1])))
-
 		vy_pred[i + 1] = vy[i] + h * FVY(x[i], y[i])
-		vy[i + 1] = vy[i] + h/2 * ((FVY(x[i], y[i]) + FVY(vx_pred[i + 1], vy_pred[i + 1])))
-
 		x_pred[i + 1] = x[i] + h * vx[i]
-		x[i + 1] = x[i] + h/2 * ((vx[i] + vx[i + 1]))
-
 		y_pred[i + 1] = y[i] + h * vy[i]
+		
+		vx[i + 1] = vx[i] + h/2 * ((FVX(x[i], y[i]) + FVX(x_pred[i + 1], y_pred[i + 1])))
+		vy[i + 1] = vy[i] + h/2 * ((FVY(x[i], y[i]) + FVY(x_pred[i + 1], y_pred[i + 1])))
+		x[i + 1] = x[i] + h/2 * ((vx[i] + vx[i + 1]))
 		y[i + 1] = y[i] + h/2 * ((vy[i] + vy[i + 1]))
 		#Em[i] = (1/2 * (vx[i]**2 + vy[i]**2)) - 6.674e-11 * 5972e21 / math.sqrt((-4.670e6-x[i])**2 + (-y[i])**2)
 
@@ -57,3 +55,4 @@ def rk2(h, tf):
 	plt.show()
 
 rk2(h, 5799)
+
