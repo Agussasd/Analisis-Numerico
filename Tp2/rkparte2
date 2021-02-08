@@ -1,0 +1,13 @@
+VX(x, y):
+	"""dVx/dt"""
+	alf1 = np.arctan2(-y, -4.670e+6 - x)
+	alf2 = np.arctan2(-y, 379.7e+6 - x)
+	ecuacion_resuelta = (6.674e-11) * ((5972e+21)/(((-4.670e+6-x)**2) + ((-y)**2))) * np.cos(alf1) + (6.674e-11)*((73.48e+21)/(((379.7e+6-x)**2)+((-y)**2)))*np.cos(alf2)
+	return ecuacion_resuelta
+
+def FVY(x, y):
+	"""dVy/dt"""
+	alf1 = np.arctan2(-y, -4.670e+6 - x)
+	alf2 = np.arctan2(-y, 379.7e+6 - x)
+	ecuacion_resuelta = (6.674e-11) * ((5972e+21)/(((-4.670e+6-x)**2) + ((-y)**2))) * np.sin(alf1)+ (6.674e-11)*((73.48e+21)/(((379.7e+6-x)**2)+((-y)**2)))*np.sin(alf2)
+	return ecuacion_resuelta
