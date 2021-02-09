@@ -2,7 +2,9 @@ import numpy as np
 import math
 from matplotlib import pyplot as plt
 
-h = 1
+h = 11
+tf = 840000
+v0 = 10578 * math.sin(math.pi / 2)
 
 def FVX(x, y):
 	"""dVx/dt"""
@@ -18,7 +20,7 @@ def FVY(x, y):
 	ecuacion_resuelta = (6.674e-11) * ((5972e+21)/(((-4.670e+6-x)**2) + ((-y)**2))) * np.sin(alf1)+ (6.674e-11)*((73.48e+21)/(((379.7e+6-x)**2)+((-y)**2)))*np.sin(alf2)+((4.236e-7)**2)*math.sqrt((x**2)+(y**2))*np.sin(np.arctan2(y,x))
 	return ecuacion_resuelta
 
-def rk2(h, tf):
+def rk2(h, tf, v0):
 	"""Recibe h que es el tamaño de pasos, y tf que es el tiempo final (periodo) y grafica x, y"""
 	
 	n = (tf / h) 
@@ -36,7 +38,7 @@ def rk2(h, tf):
 	x[0] = -11646000
 	y[0] = 0
 	vx[0] = 0
-	vy[0] = 7558.746225
+	vy[0] = v0
 
 	for i in np.arange(0, n - 1):
 		vx_pred[i + 1] = vx[i] + h * FVX(x[i], y[i])
@@ -53,8 +55,7 @@ def rk2(h, tf):
 	plt.plot(x, y)
 	plt.xlabel('x')
 	plt.ylabel('y')
-	plt.title('Trayectoria con h = {}'.format(h))
+	plt.title('Trayectoria con h = {}, t = {} y v0 = {}'.format(h, tf, v0))
 	plt.show()
 
-rk2(h, 5799)
-
+rk2(h, tf, v0)
