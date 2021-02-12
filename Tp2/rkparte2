@@ -2,7 +2,7 @@ import numpy as np
 import math
 from matplotlib import pyplot as plt
 
-h = 11
+h = 10
 tf = 840000
 v0 = 10578 * math.sin(math.pi / 2)
 
@@ -33,7 +33,10 @@ def rk2(h, tf, v0):
 	x = np.zeros(n)
 	y_pred = np.zeros(n)
 	y = np.zeros(n)
-	Em = np.zeros(n - 1)
+	Ec = np.zeros(n)
+	Ep = np.zeros(n)
+	Em = np.zeros(n)
+	tiempo = np.zeros(n)
 
 	x[0] = -11646000
 	y[0] = 0
@@ -50,12 +53,19 @@ def rk2(h, tf, v0):
 		vy[i + 1] = vy[i] + h/2 * ((FVY(x[i], y[i]) + FVY(x_pred[i + 1], y_pred[i + 1])))
 		x[i + 1] = x[i] + h/2 * ((vx[i] + vx[i + 1]))
 		y[i + 1] = y[i] + h/2 * ((vy[i] + vy[i + 1]))
-		#Em[i] = (1/2 * (vx[i]**2 + vy[i]**2)) - 6.674e-11 * 5972e21 / math.sqrt((-4.670e6-x[i])**2 + (-y[i])**2)
+		Ec[i] = (1/2 * (vx[i]**2 + vy[i]**2))  
+		Ep[i] = (-6.674e-11 * 5972e21 / math.sqrt((-4.670e6-x[i])**2 + (-y[i])**2)) - (6.674e-11 * 73.48E21 / math.sqrt((379.7e6-x[i])**2 + (-y[i])**2))
+		Em[i] = Ec[i] + Ep[i]
+		tiempo[i] = i
 
-	plt.plot(x, y)
-	plt.xlabel('x')
-	plt.ylabel('y')
-	plt.title('Trayectoria con h = {}, t = {} y v0 = {}'.format(h, tf, v0))
+	plt.plot(Ec, tiempo, label = "ECinetica")
+	plt.plot(Ep, tiempo, label = "EPotencial")
+	plt.plot(Em, tiempo, label = "EMecanica")
+	plt.axis('equal')
+	plt.xlabel('Energias')
+	plt.ylabel('Tiempo')
+	plt.title('Energia para h = {}'.format(h))
+	plt.legend()
 	plt.show()
 
 rk2(h, tf, v0)
